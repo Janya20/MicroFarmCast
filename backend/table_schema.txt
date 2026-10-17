@@ -1,0 +1,91 @@
+Verified from PostgreSQL catalog on 2026-10-16.
+
+Source database: microfarmcast_db
+Schema: public
+Search path: "$user", public
+
+The four tables below were observed in public on microfarmcast_db; their
+columns and types match the existing SQLAlchemy models. The database also has
+the weather_observations_humidity_percent_check constraint, which is not
+declared in the current ORM model. This document does not imply that the
+microfarmcast_test_db schema exists. A read-only catalog check found no public
+tables in microfarmcast_test_db on 2026-10-16. No schema was created or changed.
+
+TABLE public.farms
+	id                    BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+	name                  VARCHAR(150) NOT NULL
+	latitude              DOUBLE PRECISION NOT NULL
+	longitude             DOUBLE PRECISION NOT NULL
+	crop_type             VARCHAR(100) NULL
+	location_description  TEXT NULL
+	created_at            TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+
+	Constraints:
+		farms_pkey PRIMARY KEY (id)
+		farms_latitude_check CHECK (latitude >= -90 AND latitude <= 90)
+		farms_longitude_check CHECK (longitude >= -180 AND longitude <= 180)
+
+	Indexes:
+		farms_pkey UNIQUE BTREE (id)
+
+TABLE public.weather_observations
+	id                    BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+	farm_id               BIGINT NOT NULL
+	temperature_c         DOUBLE PRECISION NULL
+	humidity_percent      DOUBLE PRECISION NULL
+	soil_moisture         DOUBLE PRECISION NULL
+	precipitation_mm      DOUBLE PRECISION NULL
+	wind_speed_mps        DOUBLE PRECISION NULL
+	source                VARCHAR(50) NULL
+	observed_at           TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+	created_at            TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+
+	Constraints:
+		weather_observations_pkey PRIMARY KEY (id)
+		weather_observations_farm_id_fkey FOREIGN KEY (farm_id)
+			REFERENCES public.farms(id) ON DELETE CASCADE
+		weather_observations_humidity_percent_check
+			CHECK (humidity_percent >= 0 AND humidity_percent <= 100)
+
+	Indexes:
+		weather_observations_pkey UNIQUE BTREE (id)
+		idx_observations_farm_time BTREE (farm_id, observed_at DESC)
+
+TABLE public.predictions
+	id                    BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+	farm_id               BIGINT NOT NULL
+	prediction_type       VARCHAR(50) NOT NULL
+	predicted_value       JSONB NOT NULL
+	risk_level            VARCHAR(30) NULL
+	model_name            VARCHAR(150) NULL
+	predicted_at          TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+	created_at            TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+
+	Constraints:
+		predictions_pkey PRIMARY KEY (id)
+		predictions_farm_id_fkey FOREIGN KEY (farm_id)
+			REFERENCES public.farms(id) ON DELETE CASCADE
+
+	Indexes:
+		predictions_pkey UNIQUE BTREE (id)
+		idx_predictions_farm_time BTREE (farm_id, predicted_at DESC)
+
+TABLE public.alerts
+	id                    BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY
+	farm_id               BIGINT NOT NULL
+	title                 VARCHAR(200) NOT NULL
+	message               TEXT NOT NULL
+	severity              VARCHAR(30) NULL
+	status                VARCHAR(30) NOT NULL DEFAULT 'open'
+	created_at            TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
+	acknowledged_at       TIMESTAMP WITH TIME ZONE NULL
+
+	Constraints:
+		alerts_pkey PRIMARY KEY (id)
+		alerts_farm_id_fkey FOREIGN KEY (farm_id)
+			REFERENCES public.farms(id) ON DELETE CASCADE
+
+	Indexes:
+		alerts_pkey UNIQUE BTREE (id)
+		idx_alerts_farm_time BTREE (farm_id, created_at DESC)
+		idx_alerts_status BTREE (status)
