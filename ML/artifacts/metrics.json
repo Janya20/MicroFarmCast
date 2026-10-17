@@ -1,0 +1,107 @@
+{
+  "data_type": "synthetic-demo",
+  "warning": "Synthetic-demo metrics demonstrate pipeline execution only; they are not evidence of real-world or farm-level accuracy.",
+  "input_rows": 6480,
+  "locations": 6,
+  "train_rows": 4530,
+  "validation_rows": 966,
+  "test_rows": 972,
+  "embargo_rows": 12,
+  "split_train_end": "2025-07-02 11:00:00+00:00",
+  "split_validation_end": "2025-07-09 05:00:00+00:00",
+  "models": {
+    "temperature_c": {
+      "status": "trained",
+      "evaluation": {
+        "validation": {
+          "xgboost_mae": 0.22413748207297632,
+          "xgboost_rmse": 0.2771013400253199,
+          "persistence_mae": 0.6563106004140786,
+          "persistence_rmse": 0.7579576327364185
+        },
+        "test": {
+          "xgboost_mae": 0.2231303560643167,
+          "xgboost_rmse": 0.28177536734962655,
+          "persistence_mae": 0.6639465113871635,
+          "persistence_rmse": 0.7643193127396505
+        }
+      }
+    },
+    "relative_humidity_pct": {
+      "status": "trained",
+      "evaluation": {
+        "validation": {
+          "xgboost_mae": 0.9420840876090799,
+          "xgboost_rmse": 1.1785815646580757,
+          "persistence_mae": 1.4705457453416149,
+          "persistence_rmse": 1.788996289155374
+        },
+        "test": {
+          "xgboost_mae": 0.9480713529206901,
+          "xgboost_rmse": 1.1834106161316118,
+          "persistence_mae": 1.4422699792960663,
+          "persistence_rmse": 1.7698468329783565
+        }
+      }
+    },
+    "wind_speed_mps": {
+      "status": "trained",
+      "evaluation": {
+        "validation": {
+          "xgboost_mae": 0.2880521314346124,
+          "xgboost_rmse": 0.36149549328380365,
+          "persistence_mae": 0.3061319875776397,
+          "persistence_rmse": 0.38539021641377125
+        },
+        "test": {
+          "xgboost_mae": 0.3037953636759803,
+          "xgboost_rmse": 0.3827688527901876,
+          "persistence_mae": 0.3211531780538302,
+          "persistence_rmse": 0.4027077609781942
+        }
+      }
+    },
+    "soil_moisture": {
+      "status": "trained",
+      "evaluation": {
+        "validation": {
+          "xgboost_mae": 0.013684743833043316,
+          "xgboost_rmse": 0.02698206126733274,
+          "persistence_mae": 0.01270148033126294,
+          "persistence_rmse": 0.026364413312976908
+        },
+        "test": {
+          "xgboost_mae": 0.01394968153960463,
+          "xgboost_rmse": 0.022554570398615657,
+          "persistence_mae": 0.010409202898550724,
+          "persistence_rmse": 0.020523360862619664
+        }
+      }
+    },
+    "rainfall_mm": {
+      "status": "trained",
+      "evaluation": {
+        "validation": {
+          "rain_accuracy": 0.860248447204969,
+          "rain_precision": 0.0,
+          "rain_recall": 0.0,
+          "rain_f1": 0.0,
+          "rain_brier": 0.11980336904525757,
+          "amount_mae_all_cases": 0.6403230362644551,
+          "amount_rmse_all_cases": 2.325014440926402,
+          "persistence_amount_mae": 1.1989279917184263
+        },
+        "test": {
+          "rain_accuracy": 0.8840579710144928,
+          "rain_precision": 0.0,
+          "rain_recall": 0.0,
+          "rain_f1": 0.0,
+          "rain_brier": 0.10372161865234375,
+          "amount_mae_all_cases": 0.4917750103519669,
+          "amount_rmse_all_cases": 1.8420131543301925,
+          "persistence_amount_mae": 0.9229006314699792
+        }
+      }
+    }
+  }
+}
