@@ -1,0 +1,10 @@
+__pycache__/
+.venv/
+data/
+demo_data/
+demo_artifacts/
+artifacts_power/
+artifacts_bengaluru_5target/
+artifacts/
+*.py[cod]
+.ipynb_checkpoints/
